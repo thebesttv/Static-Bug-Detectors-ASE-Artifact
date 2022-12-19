@@ -61,19 +61,26 @@ def main(argv=None):
 
 
 def _run_command(command):
+    def capture_stdout_live(process):
+        stdout = ''
+        for line in iter(process.stdout.readline, ''):
+            sys.stdout.write(line)
+            stdout += line
+        _, stderr = process.communicate()
+        stderr = stderr.decode('utf-8').strip()
+        return stdout.strip(), stderr.strip()
+
     print '> Py2 cmd:', command
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    stdout, stderr = process.communicate()
-    stdout = stdout.decode('utf-8').strip()
-    stderr = stderr.decode('utf-8').strip()
+    stdout, stderr = capture_stdout_live(process)
     ok = process.returncode == 0
     return process, stdout, stderr, ok
 
 
 def _print_error(msg, stdout=None, stderr=None):
     print('Error: ' + msg)
-    if stdout is not None:
-        print('stdout:\n{}'.format(stdout.encode('utf-8')))
+    # if stdout is not None:
+    #     print('stdout:\n{}'.format(stdout.encode('utf-8')))
     if stderr is not None:
         print('stderr:\n{}'.format(stderr.encode('utf-8')))
 
