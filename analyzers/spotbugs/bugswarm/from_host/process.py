@@ -65,6 +65,7 @@ def _run_command(command):
         stdout = ''
         for line in iter(process.stdout.readline, ''):
             sys.stdout.write(line)
+            sys.stdout.flush()
             stdout += line
         _ = process.communicate()
         return stdout.strip(), ''
