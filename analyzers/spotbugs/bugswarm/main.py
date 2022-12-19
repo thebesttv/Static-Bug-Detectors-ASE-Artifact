@@ -39,10 +39,10 @@ class SpotbugsRunner(ParallelArtifactRunner):
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
             cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
-            sudo python {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
+            sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
             echo 'Done running {process_py}.'
             cd {passed_repo_dir} && echo 'Running {process_py} in passed repository.'
-            sudo python {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'passed' {l_h}
+            sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'passed' {l_h}
             echo 'Done running {process_py}.'""".format(**{
             'image_tag': image_tag,
 
@@ -91,8 +91,6 @@ class SpotbugsRunner(ParallelArtifactRunner):
         print(f'> Tag: {image_tag}')
         print(f'> Cmd: {command_final}')
         process, stdout, stderr, ok = utils.run_command(command_final)
-        print(stdout)
-        print(stderr)
         return [stdout, stderr], ok
 
 
