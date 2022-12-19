@@ -90,7 +90,7 @@ class SpotbugsRunner(ParallelArtifactRunner):
         command_final = 'docker run -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(volume_name, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
         print(f'> Tag: {image_tag}')
         print(f'> Cmd: {command_final}')
-        process, stdout, stderr, ok = utils.run_command(command_final)
+        process, stdout, stderr, ok = utils.run_command(command_final, image_tag)
         return [stdout, stderr], ok
 
 

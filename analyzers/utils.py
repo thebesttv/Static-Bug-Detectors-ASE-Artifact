@@ -1,7 +1,7 @@
 import subprocess
 
 
-def run_command(command):
+def run_command(command, prefix=None):
     def capture_stdout_stderr_live(process):
         import sys
         import selectors
@@ -20,6 +20,8 @@ def run_command(command):
                 data = key.fileobj.read1().decode()
                 if not data:
                     return stdout.strip(), stderr.strip()
+                if prefix is not None:
+                    data = f'[{prefix}] {data}'
                 if key.fileobj is process.stdout:
                     print(data, end="")
                     sys.stdout.flush()
