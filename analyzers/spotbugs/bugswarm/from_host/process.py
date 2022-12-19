@@ -66,9 +66,8 @@ def _run_command(command):
         for line in iter(process.stdout.readline, ''):
             sys.stdout.write(line)
             stdout += line
-        _, stderr = process.communicate()
-        stderr = stderr.decode('utf-8').strip()
-        return stdout.strip(), stderr.strip()
+        _ = process.communicate()
+        return stdout.strip(), ''
 
     print '> Py2 cmd:', command
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
