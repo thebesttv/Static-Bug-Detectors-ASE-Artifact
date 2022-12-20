@@ -39,7 +39,9 @@ class SpotbugsRunner(ParallelArtifactRunner):
         return """export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
-            cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
+            cd {failed_repo_dir}
+            echo 'Add Maven mirror' && sudo bash add-maven-mirror.sh
+            echo 'Running {process_py} in failed repository.'
             sudo python {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
             echo 'Done running {process_py}.'
             cd {passed_repo_dir} && echo 'Running {process_py} in passed repository.'
