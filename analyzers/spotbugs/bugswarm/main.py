@@ -35,6 +35,7 @@ class SpotbugsRunner(ParallelArtifactRunner):
 
     @staticmethod
     def _get_command(image_tag, l_or_h):
+        """Return commands to run on BugSwarm Docker container"""
         return """export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
@@ -46,8 +47,8 @@ class SpotbugsRunner(ParallelArtifactRunner):
             echo 'Done running {process_py}.'""".format(**{
             'image_tag': image_tag,
 
-            'container_sandbox': procutils.CONTAINER_SANDBOX,
-            'host_sandbox': HOST_SANDBOX,
+            'container_sandbox': procutils.CONTAINER_SANDBOX, # /bugswarm-sandbox
+            'host_sandbox': HOST_SANDBOX,                     # /.../Static-Bug-Detectors-ASE-Artifact/analyzers/results/sblt-proj-reports
 
             'copy_dir': _COPY_DIR,
             'failed_repo_dir': '/home/travis/build/failed/*/*/',

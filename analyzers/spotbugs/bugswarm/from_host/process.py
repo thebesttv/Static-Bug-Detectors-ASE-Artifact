@@ -21,6 +21,14 @@ import sys
 def main(argv=None):
     argv = argv or sys.argv
 
+    # Command to run this script:
+    #   sudo python process.py tananaev-traccar-64783123 /bugswarm-sandbox modify_pom.py 'failed' low
+    # arguments:
+    #   image_tag:         BugSwarms image tag (e.g. tananaev-traccar-64783123)
+    #   container_sandbox: location of sanbox folder in container (e.g. /bugswarm-sandbox)
+    #   modify_pom_script: POM modification script location (e.g. modify_pom.py)
+    #   f_or_p:            failed or passed
+    #   l_or_h:            low or high threshold
     image_tag, container_sandbox, modify_pom_script, f_or_p, l_or_h = _validate_input(argv)
 
     # Install dependencies for modifying the POM.
