@@ -57,7 +57,7 @@ def main(argv=None):
     bug_tuples = []
     with open(bugs_fp) as f:
         bug_tuples = [bug.strip().split(',') for bug in f.readlines()]
-    
+
     for bug in bug_tuples:
         print(bug[0], bug[1], bug[2])
         run_nullaway(bug[0], bug[1], bug[2])

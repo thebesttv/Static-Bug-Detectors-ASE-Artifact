@@ -98,7 +98,7 @@ def create_tag(name: str, attrs={}):
 def _validate_input(argv):
     if len(argv) != 2:
         print('Not enough arguments.')
-        sys.exit(1)       
+        sys.exit(1)
     build_xml_fp = argv[1]
     if not os.path.isfile(build_xml_fp):
         print('build_xml_fp DNE')
@@ -108,7 +108,7 @@ def _validate_input(argv):
 
 def modify_build_xml(build_xml_fp):
     soup = BeautifulSoup(open(build_xml_fp), 'lxml-xml')
-    
+
     # Modify build.xml file.
     add_tags(soup)
 
@@ -121,12 +121,12 @@ def modify_build_xml(build_xml_fp):
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    
+
     # Read in the build.xml file and open it with BS.
     build_xml_fp = _validate_input(argv)
-    
+
     # Modify build.xml and write updated back.
-    modify_build_xml(build_xml_fp) 
+    modify_build_xml(build_xml_fp)
 
     ## ADD CLOVER JAR TO UNIT PATH
 

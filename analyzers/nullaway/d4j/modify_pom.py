@@ -43,7 +43,7 @@ def main(argv=None):
     # Overwrite the existing POM with the updated POM.
     with open('{}'.format(pom_path), 'w') as f:
       f.write(soup.prettify().encode('utf-8'))
-    
+
 
 def _make_nullable_dependency():
   findbugs_dependency_xml = """

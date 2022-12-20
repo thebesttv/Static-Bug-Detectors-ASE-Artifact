@@ -13,7 +13,7 @@ from bugswarm.common.artifact_processing.runners import ParallelArtifactRunner
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(os.path.dirname(current_dir))
-sys.path.insert(0, parent_dir) 
+sys.path.insert(0, parent_dir)
 import utils
 
 
@@ -63,7 +63,7 @@ class InferRunner(ParallelArtifactRunner):
                     'container_sandbox': _SANDBOX_DIR,
                     'b_or_f': b_or_f,
                 })
-            
+
         return '/bin/bash -lc "{}"'.format(command)
 
     @staticmethod

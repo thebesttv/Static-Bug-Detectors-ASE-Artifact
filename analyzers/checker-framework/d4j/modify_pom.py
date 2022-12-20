@@ -19,7 +19,7 @@ def main(argv=None):
     soup.properties.insert(0, BeautifulSoup(errorprone_xml, 'lxml-xml').find('errorProneJavac'))
     checker_xml = '<checkerFrameworkVersion>3.10.0</checkerFrameworkVersion>'
     soup.properties.insert(0, BeautifulSoup(checker_xml, 'lxml-xml').find('checkerFrameworkVersion'))
-    
+
     # Add <dependencies> tag
     dependencies = soup.project.find('dependencies')
     if dependencies is None:
@@ -37,7 +37,7 @@ def main(argv=None):
       <version>9+181-r4173-1</version>
     </dependency>"""
       soup.project.dependencies.insert(1, BeautifulSoup(errorprone_xml, 'lxml-xml').find('dependency'))
-    
+
     # Add <build> tag
     added_build = False
     builds = soup.project.find_all('build')
