@@ -67,7 +67,7 @@ def create_target_tag(soup, working_dir, report_level):
     spotbugs_tag = create_tag('spotbugs', {'home': '${spotbugs.home}',
                                            'effort': 'max',
                                            'reportLevel': report_level,
-                                           'output':'xml', 
+                                           'output':'xml',
                                            'outputFile': 'spotbugsXml.xml'})
     # Append sourcePath and class tags to spotbugs
     spotbugs_tag.append(sourcepath_tag)
@@ -82,7 +82,7 @@ def create_target_tag(soup, working_dir, report_level):
 def _validate_input(argv):
     if len(argv) != 3:
         print('Not enough arguments.')
-        sys.exit(1)       
+        sys.exit(1)
     build_xml_fp = argv[1]
     if not os.path.isfile(build_xml_fp):
         print('build_xml_fp DNE')
@@ -108,10 +108,10 @@ def modify_build_xml(build_xml_fp, report_level):
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    
+
     # Read in the build.xml file and open it with BS.
     build_xml_fp, report_level = _validate_input(argv)
-    
+
     # Modify build.xml and write updated back.
     modify_build_xml(build_xml_fp, report_level)
 

@@ -15,7 +15,7 @@ from bugswarm.common.artifact_processing.runners import ParallelArtifactRunner
 
 current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 parent_dir = os.path.dirname(os.path.dirname(current_dir))
-sys.path.insert(0, parent_dir) 
+sys.path.insert(0, parent_dir)
 import utils
 
 _COPY_DIR = 'from_host'
@@ -35,10 +35,13 @@ class SpotbugsRunner(ParallelArtifactRunner):
 
     @staticmethod
     def _get_command(image_tag, l_or_h):
+        """Return commands to run on BugSwarm Docker container"""
         return """export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
-            cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
+            cd {failed_repo_dir}
+            echo 'Add Maven mirror' && sudo bash add-maven-mirror.sh
+            echo 'Running {process_py} in failed repository.'
             sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
             echo 'Done running {process_py}.'
             cd {passed_repo_dir} && echo 'Running {process_py} in passed repository.'
@@ -46,8 +49,8 @@ class SpotbugsRunner(ParallelArtifactRunner):
             echo 'Done running {process_py}.'""".format(**{
             'image_tag': image_tag,
 
-            'container_sandbox': procutils.CONTAINER_SANDBOX,
-            'host_sandbox': HOST_SANDBOX,
+            'container_sandbox': procutils.CONTAINER_SANDBOX, # /bugswarm-sandbox
+            'host_sandbox': HOST_SANDBOX,                     # /.../Static-Bug-Detectors-ASE-Artifact/analyzers/results/sblt-proj-reports
 
             'copy_dir': _COPY_DIR,
             'failed_repo_dir': '/home/travis/build/failed/*/*/',

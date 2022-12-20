@@ -5,7 +5,7 @@ This script performs the following steps when run inside an artifact container:
   3. Copy the reports to the container-side sandbox to make them available from the host.
 
 Requirements:
-  1. This script if run with Python 2.x.
+  1. This script is run with Python 2.x.
   2. This script is run inside an artifact container.
   3. This script is run from inside either the failed or passed repositories in the artifact container.
   4. The Python script that modifies the POM is in the same directory as this script.
@@ -21,6 +21,14 @@ import sys
 def main(argv=None):
     argv = argv or sys.argv
 
+    # Command to run this script:
+    #   sudo python process.py tananaev-traccar-64783123 /bugswarm-sandbox modify_pom.py 'failed' low
+    # arguments:
+    #   image_tag:         BugSwarms image tag (e.g. tananaev-traccar-64783123)
+    #   container_sandbox: location of sanbox folder in container (e.g. /bugswarm-sandbox)
+    #   modify_pom_script: POM modification script location (e.g. modify_pom.py)
+    #   f_or_p:            failed or passed
+    #   l_or_h:            low or high threshold
     image_tag, container_sandbox, modify_pom_script, f_or_p, l_or_h = _validate_input(argv)
 
     # Install dependencies for modifying the POM.

@@ -19,7 +19,7 @@ def create_tag(name: str, attrs={}):
 def _validate_input(argv):
     if len(argv) != 3:
         print('Not enough arguments.')
-        sys.exit(1)       
+        sys.exit(1)
     build_xml_fp = argv[1]
     if not os.path.isfile(build_xml_fp):
         print('build_xml_fp DNE')
@@ -40,7 +40,7 @@ def _make_populate_path_tag():
     for path in paths:
         path_tag.insert(0, create_tag('pathelement', attrs={'location' : path}))
     return path_tag
- 
+
 
 def modify_build_xml(build_xml_fp, group_id):
     soup = BeautifulSoup(open(build_xml_fp), 'lxml-xml')
@@ -72,12 +72,12 @@ def modify_build_xml(build_xml_fp, group_id):
 def main(argv=None):
     if argv is None:
         argv = sys.argv
-    
+
     # Read in the build.xml file and open it with BS.
     build_xml_fp, group_id = _validate_input(argv)
-    
+
     # Modify build.xml and write updated back.
-    modify_build_xml(build_xml_fp, group_id) 
+    modify_build_xml(build_xml_fp, group_id)
 
 
 if __name__ == '__main__':
