@@ -1,11 +1,40 @@
 import subprocess
 
 
-def run_command(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    stdout, stderr = process.communicate()
-    stdout = stdout.decode('utf-8').strip()
-    stderr = stderr.decode('utf-8').strip()
+def run_command(command, prefix=None):
+    def capture_stdout_stderr_live(process):
+        import sys
+        import selectors
+
+        sel = selectors.DefaultSelector()
+        sel.register(process.stdout, selectors.EVENT_READ)
+        sel.register(process.stderr, selectors.EVENT_READ)
+
+        stdout = ''
+        stderr = ''
+
+        # live output both stdout & stderr while preserving order
+        # https://stackoverflow.com/a/56918582
+        while True:
+            for key, _ in sel.select():
+                data = key.fileobj.read1().decode()
+                if not data:
+                    return stdout.strip(), stderr.strip()
+                if prefix is not None:
+                    data = f'[{prefix}] {data}'
+                if key.fileobj is process.stdout:
+                    print(data, end="")
+                    sys.stdout.flush()
+                    stdout += data
+                else:
+                    print(data, end="", file=sys.stderr)
+                    stderr += data
+
+    process = subprocess.Popen(command, shell=True,
+                               stdout=subprocess.PIPE,
+                               stderr=subprocess.PIPE)
+
+    stdout, stderr = capture_stdout_stderr_live(process)
     ok = process.returncode == 0
     return process, stdout, stderr, ok
 
