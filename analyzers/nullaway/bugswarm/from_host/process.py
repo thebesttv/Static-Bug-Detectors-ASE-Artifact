@@ -5,7 +5,7 @@ This script performs the following steps when run inside an artifact container:
   3. Copy the reports to the container-side sandbox to make them available from the host.
 
 Requirements:
-  1. This script if run with Python 2.x.
+  1. This script is run with Python 2.x.
   2. This script is run inside an artifact container.
   3. This script is run from inside either the failed or passed repositories in the artifact container.
   4. The Python script that modifies the POM is in the same directory as this script.
