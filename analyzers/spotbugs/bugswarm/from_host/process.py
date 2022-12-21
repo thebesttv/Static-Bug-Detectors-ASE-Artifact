@@ -75,13 +75,17 @@ def _run_command(command):
             sys.stdout.write(line)
             sys.stdout.flush()
             stdout += line
-        _ = process.communicate()
         return stdout.strip(), ''
 
     print '> Py2 cmd:', command
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
     stdout, stderr = capture_stdout_live(process)
+    _ = process.communicate()
     ok = process.returncode == 0
+    if not ok:
+        print(f"Error on command: {command}")
+        print(f"  Return code: {process.returncode}")
+        exit(1)
     return process, stdout, stderr, ok
 
 
