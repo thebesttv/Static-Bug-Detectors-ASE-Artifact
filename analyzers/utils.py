@@ -41,6 +41,9 @@ def run_command(command, prefix=None):
 
     stdout, stderr = capture_stdout_stderr_live(process)
     ok = process.returncode == 0
+    if not ok:
+        print(f"Error on command: {command}")
+        exit(1)
     return process, stdout, stderr, ok
 
 
