@@ -21,8 +21,8 @@ def _run_command(command:str):
 
 def run_spotbugs(bug_id: str, build_script: str, low_or_high: str):
     for b_or_f in ['b', 'f']:
-        bug_id_dir = os.path.join(BUGS_DIR, bug_id + b_or_f)
-        report_dir = os.path.join(REPORTS_DIR, bug_id, b_or_f)
+        bug_id_dir = os.path.join(BUGS_DIR, bug_id + b_or_f)   # e.g. Chart-14b, Chart-14f
+        report_dir = os.path.join(REPORTS_DIR, bug_id, b_or_f) # e.g. Chart-14/b, Chart-14/f
         report_dir_path = Path(report_dir).absolute()
         mkdir_cmd = 'mkdir -p {}'.format(report_dir)
         _, _, _, ok = _run_command(mkdir_cmd)
@@ -35,6 +35,7 @@ def run_spotbugs(bug_id: str, build_script: str, low_or_high: str):
             _, _, _, _ = _run_command(cp_cmd)
         else:
             cmd = 'python3 {} {} {}'.format(MODIFY_POM_XML_SCRIPT, os.path.join(bug_id_dir, build_script), low_or_high)
+        else:                   # pom.xml
             _, stdout, stderr, ok = _run_command(cmd)
             compile_cmd = 'cd {} && mvn test-compile compile'.format(bug_id_dir)
             _, sb_output, stderr, ok = _run_command(compile_cmd)
@@ -70,6 +71,9 @@ def main(argv=None):
 
     bug_tuples = []
     with open(bugs_fp) as f:
+        # Example:
+        #   Chart-14,build.xml
+        #   Lang-33,pom.xml
         bug_tuples = [bug.strip().split(',') for bug in f.readlines()]
 
     for bug in bug_tuples:
