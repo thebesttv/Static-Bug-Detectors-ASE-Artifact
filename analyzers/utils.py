@@ -40,6 +40,7 @@ def run_command(command, prefix=None):
                                stderr=subprocess.PIPE)
 
     stdout, stderr = capture_stdout_stderr_live(process)
+    _, _ = process.communicate()
     ok = process.returncode == 0
     if not ok:
         print(f"Error on command: {command}")
