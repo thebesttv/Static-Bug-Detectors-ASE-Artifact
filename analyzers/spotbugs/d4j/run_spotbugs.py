@@ -44,6 +44,12 @@ def run_spotbugs(bug_id: str, build_script: str, low_or_high: str):
             _, stdout, stderr, _ = _run_command(cp_cmd)
         print('Copied spotbugsXml.xml to {}'.format(report_dir_path))
 
+
+def _print_usage():
+    print('Usage: python3 run_spotbugs.py <bug_ids_file> <h_or_l>')
+    print('bug_ids_file: Path to a file containing a csv-separated list of (bug ids, build script to process).')
+
+
 def _validate_input(argv):
     if len(argv) != 3:
         _print_usage()
