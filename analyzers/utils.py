@@ -43,6 +43,7 @@ def run_command(command, prefix=None):
     ok = process.returncode == 0
     if not ok:
         print(f"Error on command: {command}")
+        print(f"  Return code: {process.returncode}")
         exit(1)
     return process, stdout, stderr, ok
 
