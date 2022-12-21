@@ -30,6 +30,11 @@ def run_command(command, prefix=None):
                     print(data, end="", file=sys.stderr)
                     stderr += data
 
+    if prefix is not None:
+        print(f'> [{prefix}] {command}')
+    else:
+        print(f'> {command}')
+
     process = subprocess.Popen(command, shell=True,
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE)
