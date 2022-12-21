@@ -1,9 +1,13 @@
+import inspect
 import os
-import shutil
-import subprocess
 import sys
 
 from pathlib import Path
+
+current_dir = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+parent_dir = os.path.dirname(os.path.dirname(current_dir))
+sys.path.insert(0, parent_dir)
+import utils
 
 MODIFY_BUILD_XML_SCRIPT='modify_build_xml.py'
 MODIFY_POM_XML_SCRIPT='modify_pom.py'
@@ -11,13 +15,9 @@ BUGS_DIR='../../results/sb-proj-files'
 REPORTS_DIR='../../results/sb-proj-reports'
 
 
-def _run_command(command:str):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    stdout, stderr = process.communicate()
-    stdout = stdout.decode('utf-8').strip()
-    stderr = stderr.decode('utf-8').strip()
-    ok = process.returncode == 0
-    return process, stdout, stderr, ok
+def _run_command(command: str):
+    return utils.run_command(command)
+
 
 def run_spotbugs(bug_id: str, build_script: str, low_or_high: str):
     for b_or_f in ['b', 'f']:
@@ -27,15 +27,14 @@ def run_spotbugs(bug_id: str, build_script: str, low_or_high: str):
         mkdir_cmd = 'mkdir -p {}'.format(report_dir)
         _, _, _, ok = _run_command(mkdir_cmd)
         if build_script == 'build.xml':
-            cmd = 'python3 {} {} {}'.format(MODIFY_BUILD_XML_SCRIPT, os.path.join(bug_id_dir, build_script), low_or_high)
+            cmd = 'python3 -u {} {} {}'.format(MODIFY_BUILD_XML_SCRIPT, os.path.join(bug_id_dir, build_script), low_or_high)
             _, stdout, stderr, ok = _run_command(cmd)
             compile_cmd = 'cd {} && ant compile && ant spotbugs'.format(bug_id_dir)
             _, sb_output, stderr, ok = _run_command(compile_cmd)
             cp_cmd = 'cp {}/spotbugsXml.xml {}'.format(bug_id_dir, report_dir_path)
             _, _, _, _ = _run_command(cp_cmd)
-        else:
-            cmd = 'python3 {} {} {}'.format(MODIFY_POM_XML_SCRIPT, os.path.join(bug_id_dir, build_script), low_or_high)
         else:                   # pom.xml
+            cmd = 'python3 -u {} {} {}'.format(MODIFY_POM_XML_SCRIPT, os.path.join(bug_id_dir, build_script), low_or_high)
             _, stdout, stderr, ok = _run_command(cmd)
             compile_cmd = 'cd {} && mvn test-compile compile'.format(bug_id_dir)
             _, sb_output, stderr, ok = _run_command(compile_cmd)
