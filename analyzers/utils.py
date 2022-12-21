@@ -43,9 +43,7 @@ def run_command(command, prefix=None):
     _, _ = process.communicate()
     ok = process.returncode == 0
     if not ok:
-        print(f"Error on command: {command}")
-        print(f"  Return code: {process.returncode}")
-        exit(1)
+        print(f"\x1B[31m!! Error {process.returncode} on cmd: {command}\x1B[0m")
     return process, stdout, stderr, ok
 
 

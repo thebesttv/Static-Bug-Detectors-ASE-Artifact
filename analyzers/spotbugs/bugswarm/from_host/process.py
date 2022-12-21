@@ -83,9 +83,7 @@ def _run_command(command):
     _ = process.communicate()
     ok = process.returncode == 0
     if not ok:
-        print "Error on command:", command
-        print "  Return code:", process.returncode
-        exit(1)
+        print "\x1B[31m!! Error {} on cmd: {}\x1B[0m".format(process.returncode, command)
     return process, stdout, stderr, ok
 
 
