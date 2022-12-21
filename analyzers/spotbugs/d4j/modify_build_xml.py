@@ -85,7 +85,7 @@ def _validate_input(argv):
         sys.exit(1)
     build_xml_fp = argv[1]
     if not os.path.isfile(build_xml_fp):
-        print('build_xml_fp DNE')
+        print('build_xml_fp DNE') # file does not exist
         sys.exit(1)
     report_level = argv[2]
     return build_xml_fp, report_level
