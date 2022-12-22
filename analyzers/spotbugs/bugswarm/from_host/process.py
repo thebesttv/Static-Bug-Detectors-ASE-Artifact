@@ -142,10 +142,11 @@ def _copy_test_classes_to_classes():
                     has_classes = True
                 elif filename == 'test-classes':
                     has_test_classes = True
-                if has_classes and has_test_classes:
-                    stdout, stderr, ok = _copy_test_classes(target)
-                    if not ok:
-                        _print_error('Error copying test-classes', stdout, stderr)
+            # target dir contains both classes & test-classes
+            if has_classes and has_test_classes:
+                stdout, stderr, ok = _copy_test_classes(target)
+                if not ok:
+                    _print_error('Error copying test-classes', stdout, stderr)
     else:
         _print_error('Error finding target directories', stdout, stderr)
     # topdir = '.'
