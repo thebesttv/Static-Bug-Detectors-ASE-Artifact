@@ -49,16 +49,16 @@ def main(argv=None):
 
     # Compile project
     mvn_bin_pth = _get_maven_binary_path()
-    compile_command = '{} test-compile compile'.format(mvn_bin_pth)
+    compile_command = '{} -B test-compile compile'.format(mvn_bin_pth)
     _, stdout, stderr, _ = _run_command(compile_command)
     _print_error('Attempted to compile project.', stdout, stderr)
     # Install project dependencies
-    _, stdout, stderr, _ = _run_command('{} clean install -U -DskipTests'.format(mvn_bin_pth))
+    _, stdout, stderr, _ = _run_command('{} -B clean install -U -DskipTests'.format(mvn_bin_pth))
     _print_error('Attempted to install project dependencies.', stdout, stderr)
     # Copy test .class files into classes folder
     _copy_test_classes_to_classes()
     # Generate SpotBugs reports.
-    mvn_command = '{} com.github.spotbugs:spotbugs-maven-plugin:3.1.6:spotbugs'.format(mvn_bin_pth)
+    mvn_command = '{} -B com.github.spotbugs:spotbugs-maven-plugin:3.1.6:spotbugs'.format(mvn_bin_pth)
     _, stdout, stderr, _ = _run_command(mvn_command)
     # We cannot use the return code to determine success since the Maven command should always fail for failed jobs and
     # always pass for passed jobs. SpotBugs, we check stderr as a proxy.
