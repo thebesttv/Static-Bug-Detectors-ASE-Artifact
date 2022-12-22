@@ -240,7 +240,7 @@ def _get_gradle_binary_path():
     return first_line
 
 def _pip_install(package):
-    command = 'sudo pip install {}'.format(package)
+    command = 'sudo -H pip install {}'.format(package)
     _, stdout, stderr, ok = _run_command(command)
     if not ok:
         _print_error('Failed to install {} with pip. Exiting.'.format(package), stdout, stderr)
