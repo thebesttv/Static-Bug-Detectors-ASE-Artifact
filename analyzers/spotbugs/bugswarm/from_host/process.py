@@ -90,7 +90,7 @@ def _run_command(command):
 
 
 def _print_error(msg, stdout=None, stderr=None):
-    print('Error (above): ' + msg)
+    print('Summary (above): ' + msg)
     # if stdout is not None:
     #     print('stdout:\n{}'.format(stdout.encode('utf-8')))
     # if stderr is not None:
