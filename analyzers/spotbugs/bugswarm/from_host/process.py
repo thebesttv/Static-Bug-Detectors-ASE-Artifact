@@ -34,7 +34,8 @@ def main(argv=None):
     # Install dependencies for modifying the POM.
     _pip_install('beautifulsoup4')
     _pip_install('lxml')
-    _pip_install('soupsieve')
+    # not needed
+    # _pip_install('soupsieve')
 
     # Modify the POM.
     modify_command = 'python {} pom.xml {}'.format(modify_pom_script,l_or_h)
