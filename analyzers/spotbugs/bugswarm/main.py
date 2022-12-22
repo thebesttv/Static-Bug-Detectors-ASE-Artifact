@@ -41,12 +41,12 @@ class SpotbugsRunner(ParallelArtifactRunner):
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
             cd {failed_repo_dir}
             echo 'Add Maven mirror' && sudo bash add-maven-mirror.sh
-            echo 'Running {process_py} in failed repository.'
+            echo -e '{BLUE}Running {process_py} in failed repository.{BACK}'
             sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
-            echo 'Done running {process_py}.'
-            cd {passed_repo_dir} && echo 'Running {process_py} in passed repository.'
+            echo -e '{GREEN}Done running {process_py} in failed repository.{BACK}'
+            cd {passed_repo_dir} && echo -e '{BLUE}Running {process_py} in passed repository.{BACK}'
             sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'passed' {l_h}
-            echo 'Done running {process_py}.'""".format(**{
+            echo -e '{GREEN}Done running {process_py} in passed repository.{BACK}'""".format(**{
             'image_tag': image_tag,
 
             'container_sandbox': procutils.CONTAINER_SANDBOX, # /bugswarm-sandbox
@@ -59,6 +59,11 @@ class SpotbugsRunner(ParallelArtifactRunner):
             'process_py': _PROCESS_SCRIPT,
             'modify_pom_py': _MODIFY_POM_SCRIPT,
             'l_h': l_or_h,
+
+            # https://stackoverflow.com/a/5947802/11938767
+            'GREEN': '\x1B[0;32m',
+            'BLUE':  '\x1B[0;34m',
+            'BACK':  '\x1B[0m',
         })
 
     def process_artifact(self, image_tag: str):
