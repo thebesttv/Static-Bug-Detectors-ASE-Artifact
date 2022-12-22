@@ -31,7 +31,7 @@ def run_command(command, prefix=None):
                     stderr += data
 
     if prefix is not None:
-        print(f'> [{prefix}] {command}')
+        print(f'[{prefix}] > {command}')
     else:
         print(f'> {command}')
 
