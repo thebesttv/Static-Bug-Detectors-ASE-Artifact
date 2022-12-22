@@ -109,7 +109,7 @@ def _validate_input(argv):
       sys.exit(1)
     image_tags_file = argv[1]
     if not os.path.isfile(image_tags_file):
-        log.error('The image_tags_file argument is not a file or does not exist. Exiting.')
+        sys.stderr.write('The image_tags_file argument is not a file or does not exist. Exiting.\n')
         _print_usage()
         sys.exit(1)
     dockerhub_repo = argv[2]
