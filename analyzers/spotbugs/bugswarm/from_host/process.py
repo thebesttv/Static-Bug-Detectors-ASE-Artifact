@@ -142,8 +142,8 @@ def _copy_test_classes_to_classes():
                     has_classes = True
                 elif filename == 'test-classes':
                     has_test_classes = True
-            # target dir contains both classes & test-classes
             if has_classes and has_test_classes:
+                # target dir contains both classes & test-classes
                 stdout, stderr, ok = _copy_test_classes(target)
                 if not ok:
                     _print_error('Error copying test-classes', stdout, stderr)
