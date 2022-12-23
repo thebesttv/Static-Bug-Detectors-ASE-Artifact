@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 ROOT_DIR=/home/thebesttv/Static-Bug-Detectors-ASE-Artifact
 BUG_FILE=$ROOT_DIR/data/bugs/bugswarm.bugs
 LOG_FILE=$ROOT_DIR/analyzers/results/sblt-proj-reports/log
