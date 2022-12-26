@@ -39,7 +39,7 @@ def main(argv=None):
         print('Modified the POM.')
 
     # Generate Error-Prone reports.
-    mvn_command = '{} clean compile -fn -DskipTests >> {} 2>&1'.format(_get_maven_binary_path(), OUTPUT_FILENAME)
+    mvn_command = '{} clean compile -fn -DskipTests 2>&1 | tee {}'.format(_get_maven_binary_path(), OUTPUT_FILENAME)
     _, stdout, stderr, _ = _run_command(mvn_command)
     # We cannot use the return code to determine success since the Maven command should always fail for failed jobs and
     # always pass for passed jobs. Instead, we check stderr as a proxy.
