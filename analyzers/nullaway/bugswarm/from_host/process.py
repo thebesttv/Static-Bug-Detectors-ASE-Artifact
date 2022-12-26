@@ -74,11 +74,21 @@ def _update_pip():
 
 
 def _run_command(command):
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
-    stdout, stderr = process.communicate()
-    stdout = stdout.decode('utf-8').strip()
-    stderr = stderr.decode('utf-8').strip()
+    def capture_stdout_live(process):
+        stdout = ''
+        for line in iter(process.stdout.readline, ''):
+            sys.stdout.write(line)
+            sys.stdout.flush()
+            stdout += line
+        return stdout.strip(), ''
+
+    print '> Py2 cmd:', command
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, shell=True)
+    stdout, stderr = capture_stdout_live(process)
+    _ = process.communicate()
     ok = process.returncode == 0
+    if not ok:
+        print "\x1B[31m!! Error {} on cmd: {}\x1B[0m".format(process.returncode, command)
     return process, stdout, stderr, ok
 
 
