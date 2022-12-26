@@ -25,10 +25,6 @@ def main(argv=None):
     OUTPUT_FILENAME = 'error-prone-out.txt'
     JAVA_FILES_FILENAME = 'java.files'
 
-    # Install dependencies for modifying the POM.
-    _pip_install('bs4')
-    _pip_install('lxml')
-
     # Modify the POM.
     modify_command = 'python {} pom.xml'.format(modify_pom_script)
     _, stdout, stderr, ok = _run_command(modify_command)
