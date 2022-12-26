@@ -41,7 +41,7 @@ class SpotbugsRunner(ParallelArtifactRunner):
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
             cd {failed_repo_dir}
             bash add-py-packages.sh
-            echo 'Add Maven mirror' && sudo bash add-maven-mirror.sh
+            echo 'Add Maven mirror' && bash add-maven-mirror.sh
             echo -e '{BLUE}Running {process_py} in failed repository.{BACK}'
             sudo python -u {process_py} {image_tag} {container_sandbox} {modify_pom_py} 'failed' {l_h}
             echo -e '{GREEN}Done running {process_py} in failed repository.{BACK}'
