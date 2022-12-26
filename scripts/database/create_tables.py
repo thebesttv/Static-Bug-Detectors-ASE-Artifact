@@ -8,7 +8,7 @@ from db_utils import DatabaseConnection
 
 def main():
     db_name = sys.argv[1]
-    db = DatabaseConnection('root', 'password')
+    db = DatabaseConnection('root', '')
 
     # Create and select DB
     db.create_db(db_name)

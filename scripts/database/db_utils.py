@@ -481,7 +481,7 @@ class DatabaseConnection:
 
 
 def main():
-    db = DatabaseConnection('root', 'password')
+    db = DatabaseConnection('root', '')
     # db.init_database(['spotbugs'])
     #db.select_database('reproduced_study')
     #db.create_github_table()

@@ -13,7 +13,7 @@ def main(argv=None):
 
     image_tag_file, table_name, db_name = _validate_input(argv)
 
-    db = DatabaseConnection('root', 'password')
+    db = DatabaseConnection('root', '')
     db.select_database(db_name)
     value_tuples = []
     with open(image_tag_file) as file:

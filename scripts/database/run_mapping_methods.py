@@ -4,7 +4,7 @@ import sys
 from db_utils import DatabaseConnection
 
 # Configure DB.
-DB = DatabaseConnection('root', 'password')
+DB = DatabaseConnection('root', '')
 db_name = sys.argv[1]
 DB.select_database(db_name)
 
