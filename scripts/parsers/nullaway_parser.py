@@ -41,7 +41,7 @@ def main(argv=None):
                 with open(report) as file_report:
                     for l in file_report:
                         l = l.strip()
-                        m = re.match(r'.* (/[\w/-]+\.java):([0-9]+): \w+: \[NullAway\] (.+)', l)
+                        m = re.match(r'(/[\w/-]+\.java):([0-9]+): \w+: \[NullAway\] (.+)', l)
                         if m:
                             filename = m.group(1)
                             patch = m.group(2)
