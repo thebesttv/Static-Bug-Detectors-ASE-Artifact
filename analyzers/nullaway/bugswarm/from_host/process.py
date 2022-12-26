@@ -25,9 +25,6 @@ def main(argv=None):
     OUTPUT_FILENAME = 'error-prone-out.txt'
     JAVA_FILES_FILENAME = 'java.files'
 
-    # Update pip
-    _update_pip()
-
     # Install dependencies for modifying the POM.
     _pip_install('bs4')
     _pip_install('lxml')
@@ -61,16 +58,6 @@ def _get_java_files(java_files):
     with open(java_files, 'w+') as file:
         file.write(stdout)
     return ok, stdout, stderr
-
-
-def _update_pip():
-    # Install pip with apt-get
-    command = 'sudo apt-get -y update'
-    _, stdout, stderr, ok = _run_command(command)
-
-    # Update pip with apt-get
-    command = 'sudo apt-get -y upgrade python-pip'
-    _, stdout, stderr, ok = _run_command(command)
 
 
 def _run_command(command):
