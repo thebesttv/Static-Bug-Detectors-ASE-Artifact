@@ -71,7 +71,7 @@ class NullAwayRunner(ParallelArtifactRunner):
         c = command.split('\n')
         x = [x.strip() for x in c]
         cmd = ' && '.join(x)
-        command_final = 'docker run -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(HOST_SANDBOX, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
+        command_final = 'docker run --add-host=host.docker.internal:host-gateway -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(HOST_SANDBOX, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
         process, stdout, stderr, ok = utils.run_command(command_final)
 
 
