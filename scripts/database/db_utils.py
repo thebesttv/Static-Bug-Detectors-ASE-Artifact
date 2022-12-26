@@ -18,7 +18,7 @@ class DatabaseConnection:
     def __init__(self, user, password, db=None, host='localhost', port=3306):
         print('Going to connect to database {} in server {}, for user {}'.format(db, host, user))
         try:
-            self.connection = pymysql.connect(host,
+            self.connection = pymysql.connect(host=host,
                                              user=user,
                                              password=password,
                                              db=db,
