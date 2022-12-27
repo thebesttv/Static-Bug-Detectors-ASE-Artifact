@@ -39,12 +39,12 @@ class NullnessCheckerRunner(ParallelArtifactRunner):
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
             cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
             python modify_pom.py pom.xml
-            mvn clean install -U -fn -DskipTests -Dcheckstyle.skip -Denforcer.skip=true -Danimal.sniffer.skip=true >> nullness.txt 2>&1
+            mvn clean install -U -fn -DskipTests -Dcheckstyle.skip -Denforcer.skip=true -Danimal.sniffer.skip=true 2>&1 | tee nullness.txt
             sudo mkdir -p {container_sandbox}/{image_tag}/failed
             sudo cp nullness.txt {container_sandbox}/{image_tag}/failed
             cd {passed_repo_dir} && echo 'Running {process_py} in passed repository.'
             python modify_pom.py pom.xml
-            mvn clean install -U -fn -DskipTests -Dcheckstyle.skip -Denforcer.skip=true -Danimal.sniffer.skip=true >> nullness.txt 2>&1
+            mvn clean install -U -fn -DskipTests -Dcheckstyle.skip -Denforcer.skip=true -Danimal.sniffer.skip=true 2>&1 | tee nullness.txt
             sudo mkdir -p {container_sandbox}/{image_tag}/passed
             sudo cp nullness.txt {container_sandbox}/{image_tag}/passed""".format(**{
             'image_tag': image_tag,
