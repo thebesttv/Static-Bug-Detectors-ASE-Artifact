@@ -37,7 +37,10 @@ class NullnessCheckerRunner(ParallelArtifactRunner):
             export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
-            cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
+            cd {failed_repo_dir}
+            bash add-py-packages.sh
+            echo 'Add Maven mirror' && bash add-maven-mirror.sh
+            echo 'Running {process_py} in failed repository.'
             python modify_pom.py pom.xml
             mvn clean install -U -fn -DskipTests -Dcheckstyle.skip -Denforcer.skip=true -Danimal.sniffer.skip=true 2>&1 | tee nullness.txt
             sudo mkdir -p {container_sandbox}/{image_tag}/failed
@@ -74,7 +77,7 @@ class NullnessCheckerRunner(ParallelArtifactRunner):
         x = [x.strip() for x in c]
         cmd = ' && '.join(x)
         volume_name = os.path.basename(HOST_SANDBOX)
-        command_final = 'docker run --rm -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(volume_name, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
+        command_final = 'docker run --add-host=host.docker.internal:host-gateway --rm -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(volume_name, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
         process, stdout, stderr, ok = utils.run_command(command_final)
 
 def _print_usage():
