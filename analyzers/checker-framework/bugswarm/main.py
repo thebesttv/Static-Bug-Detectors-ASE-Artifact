@@ -73,7 +73,8 @@ class NullnessCheckerRunner(ParallelArtifactRunner):
         c = command.split('\n')
         x = [x.strip() for x in c]
         cmd = ' && '.join(x)
-        command_final = 'docker run -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(HOST_SANDBOX, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
+        volume_name = os.path.basename(HOST_SANDBOX)
+        command_final = 'docker run --rm -v {}:{} -i {}:{} /bin/bash -lc "{}"'.format(volume_name, procutils.CONTAINER_SANDBOX, dockerhub_repo, image_tag, cmd)
         process, stdout, stderr, ok = utils.run_command(command_final)
 
 def _print_usage():
