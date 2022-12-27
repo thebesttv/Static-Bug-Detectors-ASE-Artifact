@@ -35,8 +35,6 @@ class NullnessCheckerRunner(ParallelArtifactRunner):
     def _get_command(image_tag):
         return """source /etc/profile
             export JAVA_HOME=/usr/lib/jvm/java-8-oracle/jre
-            sudo pip install bs4
-            sudo pip install lxml
             cp -f {container_sandbox}/{copy_dir}/* {failed_repo_dir}
             cp -f {container_sandbox}/{copy_dir}/* {passed_repo_dir}
             cd {failed_repo_dir} && echo 'Running {process_py} in failed repository.'
