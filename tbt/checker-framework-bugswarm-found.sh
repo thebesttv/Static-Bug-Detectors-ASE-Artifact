@@ -2,7 +2,7 @@
 
 ROOT_DIR=/home/thebesttv/Static-Bug-Detectors-ASE-Artifact
 BUG_FILE=$ROOT_DIR/tbt/bugs/cfnullness-bugswarm.found
-LOG_FILE=$ROOT_DIR/analyzers/results/checkerframework-proj-reports/log
+LOG_FILE=$ROOT_DIR/analyzers/results/checkerframework-proj-reports/.log
 
 rm -f $LOG_FILE
 
