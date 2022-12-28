@@ -64,7 +64,7 @@ def main(argv=None):
     with open(bug_cand_fp) as f:
         bug_can_json = json.load(f)
 
-    for tool in bug_can_json.keys():
+    for tool in sorted(bug_can_json.keys()):
         print(tool)
         for method in bug_can_json[tool].keys():
             repro = count_artifacts(bug_can_json[tool][method])
