@@ -140,12 +140,13 @@ def main(argv=None):
                 res = False
                 while not res:
                     res = utils.container_running(line)
+                    time.sleep(1)
                 print('submitting job for {}'.format(line))
                 time.sleep(15)
                 f1 = executor.submit(inf.run)
                 time.sleep(10)
                 while f1.running():
-                    pass
+                    time.sleep(1)
                 # Stop artifact container
                 utils.run_command('docker stop {}'.format(line))
                 ti_end = time.time()
