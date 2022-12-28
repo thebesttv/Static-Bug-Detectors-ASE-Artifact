@@ -44,8 +44,8 @@ class EradicateRunner(ParallelArtifactRunner):
         command = """export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_221/jre
            export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
            cd {source_dir}/{f_or_p}/*/*/
-           mvn clean install -U -DskipTests -Denforcer.skip=true -Dcheckstyle.skip -Dcobertura.skip -Dbaseline.skip=true
-           /infer/infer/bin/infer --keep-going --eradicate -- mvn clean test-compile compile -DskipTests -Denforcer.skip=true -Dcobertura.skip -Dcheckstyle.skip -Dbaseline.skip=true
+           mvn -B clean install -U -DskipTests -Denforcer.skip=true -Dcheckstyle.skip -Dcobertura.skip -Dbaseline.skip=true
+           /infer/infer/bin/infer --keep-going --eradicate -- mvn -B clean test-compile compile -DskipTests -Denforcer.skip=true -Dcobertura.skip -Dcheckstyle.skip -Dbaseline.skip=true
            mkdir -p {container_sandbox}/{image_tag}/{f_or_p}
            cp -R infer-out/report.json {container_sandbox}/{image_tag}/{f_or_p}""".format(**{
            'source_dir': _SOURCE_DIR,
