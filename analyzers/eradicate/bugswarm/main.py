@@ -63,8 +63,9 @@ class EradicateRunner(ParallelArtifactRunner):
         c = cmds.split('\n')
         x = [x.strip() for x in c]
         cmd = ' && '.join(x)
+        volume_name = os.path.basename(HOST_SANDBOX)
         command = 'docker run --rm -v {}:{} ' \
-        '--volumes-from {} datomassi/images:infer-jdk8 {}'.format(HOST_SANDBOX,
+        '--volumes-from {} datomassi/images:infer-jdk8 {}'.format(volume_name,
                                             procutils.CONTAINER_SANDBOX,
                                             container_name, cmd)
         process, stdout, stderr, ok = utils.run_command(command)
