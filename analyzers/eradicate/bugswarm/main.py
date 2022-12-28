@@ -6,6 +6,8 @@ import sys
 import time
 import concurrent.futures
 
+from distutils.dir_util import copy_tree
+
 from os.path import abspath
 
 from bugswarm.common.artifact_processing import utils as procutils
@@ -16,6 +18,7 @@ parent_dir = os.path.dirname(os.path.dirname(current_dir))
 sys.path.insert(0, parent_dir)
 import utils
 
+_COPY_DIR = 'from_host'
 _SOURCE_DIR = '/home/travis/build'
 _SANDBOX_DIR = '/bugswarm-sandbox'
 
@@ -36,6 +39,10 @@ class EradicateRunner(ParallelArtifactRunner):
         super().__init__(self.image_tags, workers)
 
 
+    def pre_run(self):
+        copy_tree(_COPY_DIR, os.path.join(HOST_SANDBOX, _COPY_DIR))
+
+
     def process_artifact(self, image_tag):
         return self.run_eradicate(image_tag, self._get_command(image_tag, self.f_or_p))
 
@@ -43,12 +50,15 @@ class EradicateRunner(ParallelArtifactRunner):
     def _get_command(image_tag, f_or_p):
         command = """export JAVA_HOME=/usr/lib/jvm/jdk1.8.0_221/jre
            export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF8
+           cp -f {container_sandbox}/{copy_dir}/* {source_dir}/{f_or_p}/*/*/
            cd {source_dir}/{f_or_p}/*/*/
+           echo 'Add Maven mirror' && bash add-maven-mirror.sh
            mvn -B clean install -U -DskipTests -Denforcer.skip=true -Dcheckstyle.skip -Dcobertura.skip -Dbaseline.skip=true
            /infer/infer/bin/infer --keep-going --eradicate -- mvn -B clean test-compile compile -DskipTests -Denforcer.skip=true -Dcobertura.skip -Dcheckstyle.skip -Dbaseline.skip=true
            mkdir -p {container_sandbox}/{image_tag}/{f_or_p}
            cp -R infer-out/report.json {container_sandbox}/{image_tag}/{f_or_p}""".format(**{
            'source_dir': _SOURCE_DIR,
+           'copy_dir': _COPY_DIR,
            'image_tag': image_tag,
            'container_sandbox': _SANDBOX_DIR,
            'f_or_p': f_or_p,
@@ -64,7 +74,7 @@ class EradicateRunner(ParallelArtifactRunner):
         x = [x.strip() for x in c]
         cmd = ' && '.join(x)
         volume_name = os.path.basename(HOST_SANDBOX)
-        command = 'docker run --rm -v {}:{} ' \
+        command = 'docker run --rm --add-host=host.docker.internal:host-gateway -v {}:{} ' \
         '--volumes-from {} datomassi/images:infer-jdk8 {}'.format(volume_name,
                                             procutils.CONTAINER_SANDBOX,
                                             container_name, cmd)
@@ -90,7 +100,7 @@ class ImageTagRunner(ParallelArtifactRunner):
         if not image_tag:
             raise ValueError
 
-        command = 'docker run -rm --name {} ' \
+        command = 'docker run --rm --name {} ' \
         '-v /home/travis/build/ {}:{} {}'.format(image_tag, dockerhub_repo, image_tag, cmd)
         process, stdout, stderr, ok = utils.run_command(command)
         return process, stdout, stderr, ok
