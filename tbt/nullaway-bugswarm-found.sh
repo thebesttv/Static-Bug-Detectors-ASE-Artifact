@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 ROOT_DIR=/home/thebesttv/Static-Bug-Detectors-ASE-Artifact
-BUG_FILE=$ROOT_DIR/data/found-bugs/nullaway.found
+BUG_FILE=$ROOT_DIR/tbt/bugs/nullaway-bugswarm.found
 LOG_FILE=$ROOT_DIR/analyzers/results/nullaway-proj-reports/log
 
 rm -f $LOG_FILE
