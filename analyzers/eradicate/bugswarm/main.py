@@ -90,7 +90,7 @@ class ImageTagRunner(ParallelArtifactRunner):
         if not image_tag:
             raise ValueError
 
-        command = 'docker run --name {} ' \
+        command = 'docker run -rm --name {} ' \
         '-v /home/travis/build/ {}:{} {}'.format(image_tag, dockerhub_repo, image_tag, cmd)
         process, stdout, stderr, ok = utils.run_command(command)
         return process, stdout, stderr, ok
