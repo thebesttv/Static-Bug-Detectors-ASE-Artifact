@@ -70,6 +70,7 @@ download_nullaway_jars () {
 }
 
 download_d4j_repos () {
+    return
     # $1 Directory to store files.
     # $2 File with projects,bugid.
     while IFS="," read -r repo id
